@@ -4,7 +4,7 @@ from typing import List
 from errors import BadMatrixEquationDimensionsError
 
 
-def omega(A_t: List[List[str]], b: list, T: float) -> List[list]:
+def solution(A_t: List[List[str]], b: list, T: float):
     # A is list of lists of strings that describe functions of t, such as t**2 + 1.
 
     # A(t) looks like [[a11(t), ..., a1n(t)], ..., [am1(t), ..., amn(t)]]
@@ -23,20 +23,7 @@ def omega(A_t: List[List[str]], b: list, T: float) -> List[list]:
                for i in range(sympy_A_t.rows)]
     sympy_P1 = Matrix(temp_P1)
 
-    v_list = [Matrix([a * Symbol('t') for _ in range(sympy_A_t.cols)]) for a in
-              range(-2, 2 + 1, 1)]  # Vectors v with n entries in form: (a*t, a*t, ..., a*t)
+    x_circumflex = [simplify(el) for el in (sympy_A_t.transpose() * sympy_P1.pinv() * sympy_b)]
 
-    omega_xt = [
-        sympy_A_t.transpose() * sympy_P1.pinv() * sympy_b + v - sympy_A_t.transpose() * sympy_P1.pinv() *
-        A_v(sympy_A_t, v, T) for v in v_list]
+    return x_circumflex
 
-    res = [[simplify(el) for el in x] for x in omega_xt]
-
-    return res
-
-
-def A_v(A_t, v, T):
-    temp_A_v = [[integrate(func, (Symbol('t'), 0, T)) for func in (A_t * v).row(i)] for i in range(A_t.rows)]
-    sympy_A_v = Matrix(temp_A_v)
-
-    return sympy_A_v

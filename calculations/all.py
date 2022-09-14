@@ -36,9 +36,19 @@ def all(A_t: List[List[str]], b: list, T: float) -> dict:
 
     x_circumflex = [simplify(el) for el in (sympy_A_t.transpose() * sympy_P1.pinv() * sympy_b)]
 
+    N = 10
+    t_s = [s * T / (N - 1) for s in range(N)]
+    uniqueness_matrix = Matrix(
+        [[calc_matrix(sympy_A_t.transpose(), t_s[i]) * calc_matrix(sympy_A_t, t_s[j]) for j in range(N)] for i in
+         range(N)])
+    print(uniqueness_matrix)
+    uniqueness_condition = uniqueness_matrix.det() > 0
+    print(uniqueness_matrix.det())
+
     return {"omega": omega_xt,
             "precision": epsilon_2,
             "solution": x_circumflex,
+            "uniqueness_condition": uniqueness_condition
             }
 
 
@@ -47,3 +57,7 @@ def A_v(A_t, v, T):
     sympy_A_v = Matrix(temp_A_v)
 
     return sympy_A_v
+
+
+def calc_matrix(matrix, at):
+    return Matrix([[el.subs(Symbol('t'), at) for el in matrix.row(i)] for i in range(matrix.rows)])

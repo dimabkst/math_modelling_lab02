@@ -12,7 +12,7 @@ def receive_data_from_view(view):
 def process_data_in_calculations(view, matrix, vector_b, T):
     try:
         res = calculations.all(matrix, vector_b, T)
-        give_date_to_output(view, res["omega"], res["solution"], True, res["precision"], T)
+        give_date_to_output(view, res["omega"], res["solution"], res["uniqueness_condition"], res["precision"], T)
     except Exception as e:
         raise e
 

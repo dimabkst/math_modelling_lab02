@@ -21,7 +21,7 @@ def precision(A_t: List[List[str]], b: list, T: float):
 
     N = 10
 
-    t_s = [s * T / (N - 1) for s in range(N)]
+    t_s = [(s + 1) * T / N for s in range(N)]
 
     uniqueness_matrix = Matrix(
         [[calc_matrix(sympy_A_t.transpose(), t_s[i]) * calc_matrix(sympy_A_t, t_s[j]) for j in range(N)] for i in

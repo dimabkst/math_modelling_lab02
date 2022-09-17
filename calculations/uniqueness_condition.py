@@ -19,7 +19,7 @@ def precision(A_t: List[List[str]], b: list, T: float):
     sympy_A_t = Matrix(temp_A_t)
     sympy_b = Matrix(b)
 
-    N = 10
+    N = 15
 
     t_s = [(s + 1) * T / N for s in range(N)]
 

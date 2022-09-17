@@ -36,7 +36,7 @@ def all(A_t: List[List[str]], b: list, T: float) -> dict:
 
     x_circumflex = [simplify(el) for el in (sympy_A_t.transpose() * sympy_P1.pinv() * sympy_b)]
 
-    N = 10
+    N = 15
     t_s = [(s + 1) * T / N for s in range(N)]
     uniqueness_matrix = Matrix(
         [[calc_matrix(sympy_A_t.transpose(), t_s[i]) * calc_matrix(sympy_A_t, t_s[j]) for j in range(N)] for i in
